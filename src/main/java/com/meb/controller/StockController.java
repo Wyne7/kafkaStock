@@ -19,9 +19,9 @@ public class StockController {
     private StockServiceInterface stockService;
 
    
-    @GetMapping("/stock/{payment_id}")
-    public DataResponse getStockInfo(@PathVariable int payment_id) {
-        DataResponse response = stockService.findItemsFromStock(payment_id);
-        return response;
-    }
+//    @GetMapping("/stock/{payment_id}")
+//    public DataResponse getStockInfo(@PathVariable int payment_id) {
+//        DataResponse response = stockService.findItemsFromStock(payment_id);
+//        return response;
+//    }
 }

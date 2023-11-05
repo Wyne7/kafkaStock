@@ -30,7 +30,47 @@ public class StockModel {
     private String description ;
     @NotNull
     private int quantity;
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public int getSyskey() {
+		return syskey;
+	}
+	public void setSyskey(int syskey) {
+		this.syskey = syskey;
+	}
+	public int getPayment_id() {
+		return payment_id;
+	}
+	public void setPayment_id(int payment_id) {
+		this.payment_id = payment_id;
+	}
+	public double getPrice() {
+		return price;
+	}
+	public void setPrice(double price) {
+		this.price = price;
+	}
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	public int getQuantity() {
+		return quantity;
+	}
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
 
+    
     
     
 }

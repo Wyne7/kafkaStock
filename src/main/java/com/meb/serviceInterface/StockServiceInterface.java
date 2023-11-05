@@ -1,11 +1,14 @@
 package com.meb.serviceInterface;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
-import com.meb.dto.DataResponse;
+import com.meb.dto.DataKafkaRequestDTO;
+import com.meb.dto.DatakafkaResponseDTO;
 
 @Service
 public interface StockServiceInterface {
 
-    DataResponse findItemsFromStock(int payment_id);
+    DatakafkaResponseDTO findItemsFromStock(List<DataKafkaRequestDTO> dto);
 }

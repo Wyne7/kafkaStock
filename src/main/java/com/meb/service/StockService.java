@@ -1,9 +1,13 @@
 package com.meb.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.meb.dto.DataKafkaRequestDTO;
 import com.meb.dto.DataResponse;
+import com.meb.dto.DatakafkaResponseDTO;
 import com.meb.model.StockModel;
 import com.meb.persistence.StockRepository;
 import com.meb.serviceInterface.StockServiceInterface;
@@ -15,28 +19,34 @@ public class StockService implements StockServiceInterface {
     private StockRepository stockRepository;
 
     @Override
-    public DataResponse findItemsFromStock(int payment_id) {
-        StockModel stockModel = stockRepository.findStockByPaymentId(payment_id);
-        DataResponse response = new DataResponse();
-        if (stockModel != null && stockModel.getQuantity() > 0) {
-                response.setPayment_id(payment_id);
-                response.setDescription(stockModel.getDescription());
-                int requestedQuantity = 7;
-                int currentQuantity = stockModel.getQuantity();
-                if(requestedQuantity <= currentQuantity){
-                    response.setStatus("Stock is available");
-                    response.setDescription(stockModel.getDescription());
-                    response.setPayment_id(payment_id);
-                    int remainingQuantity = stockModel.getQuantity() - requestedQuantity;
-                    stockModel.setQuantity(remainingQuantity);
-                    stockRepository.save(stockModel);
-                } 
+    public DatakafkaResponseDTO findItemsFromStock(List<DataKafkaRequestDTO> dto) {
+        DatakafkaResponseDTO response = new DatakafkaResponseDTO();
+       for(DataKafkaRequestDTO i:dto)
+       {
+         StockModel stockModel = stockRepository.findStockBySyskey(i.getStock_syskey());
+        if(stockModel !=null& stockModel.getQuantity()!=0)
+        { 
+                response.setStatus(true);
+                if(stockModel.getQuantity()>=i.getQty())
+                {
+                	int remainingQuantity = stockModel.getQuantity() - i.getQty();
+                	   stockModel.setQuantity(remainingQuantity);
+                       response.setDescription("Stock Remain"+remainingQuantity);
+                }
+                else
+                {
+                	   response.setStatus(false);
+                       response.setDescription("Out of stock"+stockModel.getDescription());
+                       break;
+                }
+                stockRepository.save(stockModel);
+             
         } else {
-                response.setPayment_id(payment_id);
-                response.setDescription(stockModel.getDescription());
-                response.setStatus("Out of stock");
-                return response;   
+            response.setStatus(false);
+                response.setDescription("Out of stock"+i.getQty());
+        }
         }
         return response;
+
     }
 }

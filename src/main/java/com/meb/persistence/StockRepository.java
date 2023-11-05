@@ -8,5 +8,5 @@ import com.meb.model.StockModel;
 @Repository
 public interface StockRepository extends JpaRepository<StockModel,Integer> {
     
-    StockModel findStockByPaymentId(int payment_id);
+    StockModel findStockBySyskey(int syskey);
 }
